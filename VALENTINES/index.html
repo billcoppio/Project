@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Letters</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="cssletter">
+  <div class="envelope">
+    <button class="heart" id="openEnvelope">
+      <span class="heart-text">Open</span>
+    </button>
+    <div class="envelope-flap"></div>
+    <div class="envelope-folds">
+      <div class="envelope-left"></div>
+      <div class="envelope-right"></div>
+      <div class="envelope-bottom"></div>
+    </div>
+  </div>
+
+  <div class="letters">
+    <!-- Text Letter -->
+    <blockquote class="letter" id="1">
+      <button class="closeLetter">Close</button>
+      <p>This is a sweet text letter!</p>
+      <cite>Amelia Rose</cite>
+    </blockquote>
+
+    <!-- Image Letter -->
+    <blockquote class="letter" id="2">
+      <button class="closeLetter">Close</button>
+      <img src="joan.jpg" alt="Love Picture">
+      <cite>Happy Valentines Baby</cite>
+    </blockquote>
+  </div>
+</section>
+
+<script src="letter.js"></script>
+</body>
+</html>

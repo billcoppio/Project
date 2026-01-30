@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSCQC | Dashboard</title>
   <link rel="stylesheet" href="dashboard.css">
-
 </head>
 <body>
 
- <!-- DASHBOARD HEADER -->
 <header class="dash-header">
   <div class="dash-logo">
     <img src="logo.png" alt="CSCQC Logo">
@@ -18,49 +16,70 @@
   <a href="index.html" class="logout-btn">Logout</a>
 </header>
 
+<div class="dashboard">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="enroll.html">Enroll Subjects</a>
+    <a href="my-subjects.html">My Subjects</a>
+    <a href="profile.html">Profile</a>
+  </aside>
 
-  <!-- DASHBOARD LAYOUT -->
-  <div class="dashboard">
-
-    <!-- SIDEBAR -->
-   <!-- SIDEBAR -->
-<aside class="sidebar">
-  <a href="dashboard.html" class="active">Dashboard</a>
-  <a href="enroll.html">Enroll Subjects</a>
-  <a href="my-subjects.html">My Subjects</a>
-  <a href="profile.html">Profile</a>
-</aside>
-
-<!-- MAIN CONTENT -->
-<main class="content">
-
-  <!-- Welcome Card -->
-  <div class="glass-card welcome">
-    <h2>Welcome, Student 👋</h2>
-    <p>Status: <strong>Not Enrolled</strong></p>
-  </div>
-
-  <!-- OTHER CARDS GRID -->
-  <div class="card-grid">
-
-    <div class="glass-card">
-      <h3>Enrollment</h3>
-      <p>Enroll for this semester</p>
-      <a href="enroll.html"><button>Enroll Now</button></a>
+  <!-- Main content -->
+  <main class="content">
+    <div class="glass-card welcome">
+      <h2 id="welcomeName">Welcome, Student 👋</h2>
+      <p>Status: <strong>Not Enrolled</strong></p>
     </div>
 
-    <div class="glass-card">
-      <h3>Subjects</h3>
-      <p>View your enrolled subjects</p>
-      <a href="my-subjects.html"><button>View</button></a>
+    <div class="card-grid">
+      <div class="glass-card">
+        <h3>Enrollment</h3>
+        <p>Enroll for this semester</p>
+        <a href="enroll.html"><button>Enroll Now</button></a>
+      </div>
+
+      <div class="glass-card">
+        <h3>Subjects</h3>
+        <p>View your enrolled subjects</p>
+        <a href="my-subjects.html"><button>View</button></a>
+      </div>
+
+      <div class="glass-card">
+        <h3>Profile</h3>
+        <p>Update your information</p>
+        <a href="profile.html"><button>Edit</button></a>
+      </div>
     </div>
+  </main>
+</div>
 
-    <div class="glass-card">
-      <h3>Profile</h3>
-      <p>Update your information</p>
-      <a href="profile.html"><button>Edit</button></a>
-    </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  </div>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAGRHrBAzRJ2tYT_wghel2RDAj3_rxS6wU",
+    authDomain: "cscqc-enrollment-system.firebaseapp.com",
+    projectId: "cscqc-enrollment-system",
+    storageBucket: "cscqc-enrollment-system.appspot.com",
+    messagingSenderId: "348208365849",
+    appId: "1:348208365849:web:fef2c8ffefd1a67068c588"
+  };
 
-</main>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const welcomeName = document.getElementById('welcomeName');
+
+  onAuthStateChanged(auth, (user) => {
+    if(user){
+      welcomeName.textContent = `Welcome, ${user.displayName || "Student"} 👋`;
+    } else {
+      window.location.href = "index.html"; // redirect to login if not logged in
+    }
+  });
+</script>
+
+</body>
+</html>
