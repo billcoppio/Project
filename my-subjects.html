@@ -6,7 +6,6 @@
   <title>CSCQC | My Subjects</title>
   <link rel="stylesheet" href="dashboard.css">
   <style>
-    /* Modern My Subjects page using same glass style */
     body {
       background: url("login-hero-bg.jpg") no-repeat center center;
       background-size: cover;
@@ -133,7 +132,6 @@
         border-bottom: 1px solid rgba(255,255,255,0.15);
       }
     }
-
   </style>
 </head>
 <body>
@@ -143,12 +141,10 @@
     <img src="logo.png" alt="CSCQC Logo" width="40">
     <span>CSCQC Enrollment System</span>
   </div>
-  <a href="dashboard.html" class="logout-btn">Back</a>
+  <a href="dashboard.html" class="logout-btn" id="logoutBtn">Back</a>
 </header>
 
 <div class="dashboard">
-
-  <!-- Sidebar -->
   <aside class="sidebar">
     <a href="dashboard.html">Dashboard</a>
     <a href="enroll.html">Enroll Subjects</a>
@@ -156,7 +152,6 @@
     <a href="profile.html">Profile</a>
   </aside>
 
-  <!-- Main content -->
   <div class="content">
     <h2>My Subjects</h2>
 
@@ -168,37 +163,72 @@
           <th>Units</th>
         </tr>
       </thead>
-      <tbody id="my-subject-list">
-        <!-- Subjects populated here -->
-      </tbody>
+      <tbody id="my-subject-list"></tbody>
     </table>
   </div>
-
 </div>
 
-<script>
-  // Load subjects from localStorage (from Enroll page)
-  let subjects = JSON.parse(localStorage.getItem('enrolledSubjects')) || [];
-  const tableBody = document.getElementById('my-subject-list');
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  function renderMySubjects() {
-    tableBody.innerHTML = '';
-    if(subjects.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No subjects enrolled yet.</td></tr>';
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAGRHrBAzRJ2tYT_wghel2RDAj3_rxS6wU",
+    authDomain: "cscqc-enrollment-system.firebaseapp.com",
+    projectId: "cscqc-enrollment-system",
+    storageBucket: "cscqc-enrollment-system.appspot.com",
+    messagingSenderId: "348208365849",
+    appId: "1:348208365849:web:fef2c8ffefd1a67068c588"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const tableBody = document.getElementById("my-subject-list");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // Ensure user is logged in
+  onAuthStateChanged(auth, async user => {
+    if (!user) {
+      window.location.href = "index.html"; // redirect if not logged in
       return;
     }
-    subjects.forEach(sub => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${sub.name}</td>
-        <td>${sub.code}</td>
-        <td>${sub.units}</td>
-      `;
-      tableBody.appendChild(tr);
-    });
-  }
+    const userId = user.uid;
 
-  renderMySubjects();
+    async function renderSubjects() {
+      tableBody.innerHTML = '';
+      const subjectsCol = collection(db, "users", userId, "subjects");
+      const snapshot = await getDocs(subjectsCol);
+
+      if(snapshot.empty) {
+        tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No subjects enrolled yet.</td></tr>';
+        return;
+      }
+
+      snapshot.forEach(docSnap => {
+        const sub = docSnap.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${sub.name}</td>
+          <td>${sub.code}</td>
+          <td>${sub.units}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    renderSubjects();
+
+    // Logout
+    logoutBtn.addEventListener("click", async e => {
+      e.preventDefault();
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+  });
 </script>
 
 </body>
