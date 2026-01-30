@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSCQC | My Subjects</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    /* Modern My Subjects page using same glass style */
+    body {
+      background: url("login-hero-bg.jpg") no-repeat center center;
+      background-size: cover;
+      font-family: "Open Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    header.dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      height: 70px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    header.dash-header .dash-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    header.dash-header .logout-btn {
+      background: #e63946;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header.dash-header .logout-btn:hover {
+      background: #d62828;
+    }
+
+    .dashboard {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: rgba(125,42,232,0.8);
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .subject-table {
+      width: 100%;
+      max-width: 800px;
+      border-collapse: collapse;
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .subject-table th, .subject-table td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .subject-table th {
+      background: rgba(125,42,232,0.8);
+      font-weight: 600;
+    }
+
+    .subject-table tbody tr {
+      background: rgba(0,0,0,0.55);
+      transition: 0.3s;
+    }
+
+    .subject-table tbody tr:hover {
+      background: rgba(125,42,232,0.4);
+    }
+
+    @media screen and (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header class="dash-header">
+  <div class="dash-logo">
+    <img src="logo.png" alt="CSCQC Logo" width="40">
+    <span>CSCQC Enrollment System</span>
+  </div>
+  <a href="dashboard.html" class="logout-btn">Back</a>
+</header>
+
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="enroll.html">Enroll Subjects</a>
+    <a href="my-subjects.html" class="active">My Subjects</a>
+    <a href="profile.html">Profile</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="content">
+    <h2>My Subjects</h2>
+
+    <table class="subject-table">
+      <thead>
+        <tr>
+          <th>Subject Name</th>
+          <th>Code</th>
+          <th>Units</th>
+        </tr>
+      </thead>
+      <tbody id="my-subject-list">
+        <!-- Subjects populated here -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Load subjects from localStorage (from Enroll page)
+  let subjects = JSON.parse(localStorage.getItem('enrolledSubjects')) || [];
+  const tableBody = document.getElementById('my-subject-list');
+
+  function renderMySubjects() {
+    tableBody.innerHTML = '';
+    if(subjects.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No subjects enrolled yet.</td></tr>';
+      return;
+    }
+    subjects.forEach(sub => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${sub.name}</td>
+        <td>${sub.code}</td>
+        <td>${sub.units}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  renderMySubjects();
+</script>
+
+</body>
+</html>

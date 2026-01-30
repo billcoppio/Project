@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSCQC | Enroll Subjects</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    body {
+      background: url("login-hero-bg.jpg") no-repeat center center;
+      background-size: cover;
+      font-family: "Open Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    header.dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      height: 70px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    header.dash-header .dash-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    header.dash-header .logout-btn {
+      background: #e63946;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header.dash-header .logout-btn:hover {
+      background: #d62828;
+    }
+
+    /* DASHBOARD LAYOUT */
+    .dashboard {
+      display: flex;
+      min-height: calc(100vh - 70px);
+      align-items: stretch;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 220px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: rgba(125,42,232,0.8);
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    /* FORM STYLING */
+    .crud-form {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .crud-form label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .crud-form input {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .crud-form input:focus {
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0 0 8px rgba(125,42,232,0.7);
+    }
+
+    .crud-form button {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      background: #7d2ae8;
+      transition: 0.3s;
+    }
+
+    .crud-form button:hover {
+      background: #5c1dc3;
+    }
+
+    /* TABLE STYLING */
+    .subject-table {
+      width: 100%;
+      max-width: 800px;
+      border-collapse: collapse;
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .subject-table th, .subject-table td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .subject-table th {
+      background: rgba(125,42,232,0.8);
+      font-weight: 600;
+    }
+
+    .subject-table tbody tr {
+      background: rgba(0,0,0,0.55);
+      transition: 0.3s;
+    }
+
+    .subject-table tbody tr:hover {
+      background: rgba(125,42,232,0.4);
+    }
+
+    .action-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: #fff;
+      margin-right: 5px;
+      transition: 0.3s;
+    }
+
+    .edit-btn { background: #2a9d8f; }
+    .edit-btn:hover { background: #21867a; }
+
+    .delete-btn { background: #e63946; }
+    .delete-btn:hover { background: #c5283a; }
+
+    @media screen and (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        flex-direction: row;
+        justify-content: space-around;
+      }
+      .crud-form, .subject-table {
+        width: 90%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header class="dash-header">
+  <div class="dash-logo">
+    <img src="logo.png" alt="CSCQC Logo" width="40">
+    <span>CSCQC Enrollment System</span>
+  </div>
+  <a href="dashboard.html" class="logout-btn">Back</a>
+</header>
+
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="enroll.html" class="active">Enroll Subjects</a>
+    <a href="my-subjects.html">My Subjects</a>
+    <a href="profile.html">Profile</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="content">
+    <h2>Enroll Subjects</h2>
+
+    <!-- FORM -->
+    <form id="crud-form" class="crud-form">
+      <label for="subject">Subject Name</label>
+      <input type="text" id="subject" placeholder="Enter subject name" required>
+
+      <label for="code">Subject Code</label>
+      <input type="text" id="code" placeholder="Enter subject code" required>
+
+      <label for="units">Units</label>
+      <input type="number" id="units" placeholder="Enter units" required min="1" max="5">
+
+      <button type="submit">Add Subject</button>
+    </form>
+
+    <!-- SUBJECTS TABLE -->
+    <table class="subject-table">
+      <thead>
+        <tr>
+          <th>Subject Name</th>
+          <th>Code</th>
+          <th>Units</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="subject-list">
+        <!-- Subjects will appear here -->
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('crud-form');
+  const subjectList = document.getElementById('subject-list');
+
+  let subjects = JSON.parse(localStorage.getItem('enrolledSubjects')) || [];
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('subject').value.trim();
+    const code = document.getElementById('code').value.trim();
+    const units = document.getElementById('units').value;
+
+    if(!name || !code || !units) return;
+
+    subjects.push({name, code, units});
+    localStorage.setItem('enrolledSubjects', JSON.stringify(subjects));
+    form.reset();
+    renderSubjects();
+  });
+
+  function renderSubjects() {
+    subjectList.innerHTML = '';
+    subjects.forEach((sub, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${sub.name}</td>
+        <td>${sub.code}</td>
+        <td>${sub.units}</td>
+        <td>
+          <button class="action-btn edit-btn" onclick="editSubject(${index})">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteSubject(${index})">Delete</button>
+        </td>
+      `;
+      subjectList.appendChild(tr);
+    });
+  }
+
+  function deleteSubject(index) {
+    subjects.splice(index, 1);
+    localStorage.setItem('enrolledSubjects', JSON.stringify(subjects));
+    renderSubjects();
+  }
+
+  function editSubject(index) {
+    const sub = subjects[index];
+    const newName = prompt('Edit subject name:', sub.name);
+    const newCode = prompt('Edit subject code:', sub.code);
+    const newUnits = prompt('Edit units:', sub.units);
+
+    if(newName && newCode && newUnits) {
+      subjects[index] = {name: newName, code: newCode, units: newUnits};
+      localStorage.setItem('enrolledSubjects', JSON.stringify(subjects));
+      renderSubjects();
+    }
+  }
+
+  renderSubjects();
+</script>
+
+</body>
+</html>

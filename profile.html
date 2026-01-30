@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSCQC | Profile</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    body {
+      background: url("login-hero-bg.jpg") no-repeat center center;
+      background-size: cover;
+      font-family: "Open Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    header.dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      height: 70px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    header.dash-header .dash-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    header.dash-header .logout-btn {
+      background: #e63946;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header.dash-header .logout-btn:hover {
+      background: #d62828;
+    }
+
+    .dashboard {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: rgba(125,42,232,0.8);
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .profile-card {
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #7d2ae8;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
+      border-color: #5c1dc3;
+    }
+
+    .profile-info p {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .profile-info strong {
+      color: #7d2ae8;
+    }
+
+    .edit-btn {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: #7d2ae8;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .edit-btn:hover {
+      background: #5c1dc3;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+<header class="dash-header">
+  <div class="dash-logo">
+    <img src="logo.png" alt="CSCQC Logo" width="40">
+    <span>CSCQC Enrollment System</span>
+  </div>
+  <a href="dashboard.html" class="logout-btn">Back</a>
+</header>
+
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="enroll.html">Enroll Subjects</a>
+    <a href="my-subjects.html">My Subjects</a>
+    <a href="profile.html" class="active">Profile</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="content">
+    <h2>My Profile</h2>
+
+    <div class="profile-card">
+      <label for="profilePicInput">
+        <img src="" alt="Profile Picture" id="profile-pic" class="profile-pic" title="Click to change picture">
+      </label>
+      <input type="file" id="profilePicInput" accept="image/*">
+      <div class="profile-info" id="profile-info"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Default placeholder image
+  const placeholderPic = "https://via.placeholder.com/120/7d2ae8/ffffff?text=Profile";
+
+  // Load profile from localStorage or use defaults
+  let profile = JSON.parse(localStorage.getItem('profile')) || {
+    name: "Bill Bernaldo",
+    email: "billpogi@gmail.com",
+    studentID: "CSC12345",
+    picture: placeholderPic
+  };
+
+  const profilePic = document.getElementById('profile-pic');
+  const profileInfo = document.getElementById('profile-info');
+  const profilePicInput = document.getElementById('profilePicInput');
+
+  function renderProfile() {
+    profilePic.src = profile.picture || placeholderPic;
+    profileInfo.innerHTML = `
+      <p><strong>Full Name:</strong> ${profile.name}</p>
+      <p><strong>Email:</strong> ${profile.email}</p>
+      <p><strong>Student ID:</strong> ${profile.studentID}</p>
+      <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+    `;
+  }
+
+  function editProfile() {
+    const newName = prompt("Enter your full name:", profile.name);
+    const newEmail = prompt("Enter your email:", profile.email);
+    const newID = prompt("Enter your student ID:", profile.studentID);
+
+    if(newName && newEmail && newID) {
+      profile.name = newName;
+      profile.email = newEmail;
+      profile.studentID = newID;
+      localStorage.setItem('profile', JSON.stringify(profile));
+      renderProfile();
+      alert("Profile updated successfully!");
+    }
+  }
+
+  // Profile picture upload
+  profilePicInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        profile.picture = e.target.result; // Save base64
+        localStorage.setItem('profile', JSON.stringify(profile));
+        profilePic.src = profile.picture;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+
+  renderProfile();
+</script>
+
+</body>
+</html>

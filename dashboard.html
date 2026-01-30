@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSCQC | Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+
+</head>
+<body>
+
+ <!-- DASHBOARD HEADER -->
+<header class="dash-header">
+  <div class="dash-logo">
+    <img src="logo.png" alt="CSCQC Logo">
+    <span>CSCQC Enrollment System</span>
+  </div>
+  <a href="index.html" class="logout-btn">Logout</a>
+</header>
+
+
+  <!-- DASHBOARD LAYOUT -->
+  <div class="dashboard">
+
+    <!-- SIDEBAR -->
+   <!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="dashboard.html" class="active">Dashboard</a>
+  <a href="enroll.html">Enroll Subjects</a>
+  <a href="my-subjects.html">My Subjects</a>
+  <a href="profile.html">Profile</a>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+  <!-- Welcome Card -->
+  <div class="glass-card welcome">
+    <h2>Welcome, Student 👋</h2>
+    <p>Status: <strong>Not Enrolled</strong></p>
+  </div>
+
+  <!-- OTHER CARDS GRID -->
+  <div class="card-grid">
+
+    <div class="glass-card">
+      <h3>Enrollment</h3>
+      <p>Enroll for this semester</p>
+      <a href="enroll.html"><button>Enroll Now</button></a>
+    </div>
+
+    <div class="glass-card">
+      <h3>Subjects</h3>
+      <p>View your enrolled subjects</p>
+      <a href="my-subjects.html"><button>View</button></a>
+    </div>
+
+    <div class="glass-card">
+      <h3>Profile</h3>
+      <p>Update your information</p>
+      <a href="profile.html"><button>Edit</button></a>
+    </div>
+
+  </div>
+
+</main>
